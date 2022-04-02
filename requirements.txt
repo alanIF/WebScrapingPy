@@ -1,0 +1,3 @@
+# Requerimentos
+- Instalar biblioteca beautifulsoup4, executando comando: 
+    * pip install beautifulsoup4

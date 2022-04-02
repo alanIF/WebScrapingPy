@@ -29,9 +29,12 @@ def get_movie_info(listing_url, links_url, movie_id):
             diretor=base_inicial[f]["diretor"]
             break
     for f in base_links:
-        if(base_links[f][titulo] !=None):
-            duracao=base_links[f]["duracao"]
-            link= base_links[f][titulo]
+        try:
+            if(base_links[f][titulo] != None):
+                duracao=base_links[f]["duracao"]
+                link= base_links[f][titulo]
+                break
+        except: 
             break
     filme ={
         "url":link,
@@ -105,4 +108,4 @@ def convert_link_to_raw(link):
     link = link[0]+'//'+link[2]+'/raw/'+link[3]
     return link
         
-print(get_movie_info("https://pastebin.com/PcVfQ1ff","https://pastebin.com/Tdp532rr", "terror/a vila"))
+print(get_movie_info("https://pastebin.com/PcVfQ1ff","https://pastebin.com/Tdp532rr", "terror/a vila2"))
