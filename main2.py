@@ -21,16 +21,23 @@ def get_movie_info(listing_url, links_url, movie_id):
     linhas = bs_links.find_all('tbody')
     filme_dados_especificos = read_link(linhas,titulo)
     #fim
-    filme ={
-        "url":filme_dados_especificos[titulo],
-        "titulo": titulo,
-        "genero": genero,
-        "diretor":filme_dados_gerais["diretor"],
-        "duracao":filme_dados_especificos["duracao"]
-    }
+    if((filme_dados_especificos!=None) and (filme_dados_gerais!=None)):
+        filme ={
+            "url":filme_dados_especificos[titulo],
+            "titulo": titulo,
+            "genero": genero,
+            "diretor":filme_dados_gerais["diretor"],
+            "duracao":filme_dados_especificos["duracao"]
+        }
+    else:
+         filme ={
+            "url":"Não encontrado",
+            "titulo": titulo,
+            "genero": genero,
+            "diretor":"Não encontrado",
+            "duracao":"Não encontrado"
+        }
     return filme
-  
-    
     
 def read_link(dados,titulo):
     k=0 
@@ -52,7 +59,7 @@ def read_link(dados,titulo):
                         return filme
                     k=0
             
-    return False
+    return None
 def read_duracao(link):
     link= convert_link_to_raw(link)
     html = urlopen(link)
@@ -83,7 +90,7 @@ def get_dados_gerais_filme(dados,titulo):
                         return filme
                     k=0
             
-    return false
+    return None
 def convert_link_to_raw(link):
     link = link.split("/")
     link = link[0]+'//'+link[2]+'/raw/'+link[3]
