@@ -13,7 +13,6 @@ def get_movie_info(listing_url, links_url, movie_id):
     
     # tratamento link dos dados gerais do filme
     listing_url= convert_link_to_raw(listing_url)
-    print(listing_url)
     html = urlopen(listing_url)
     bs = BeautifulSoup(html, 'html.parser')
     linhas = bs.find_all('tbody')
@@ -21,6 +20,7 @@ def get_movie_info(listing_url, links_url, movie_id):
     #fim do tratamento
 
     #tratamento da bases dos links dos filmes
+    links_url= convert_link_to_raw(links_url)
     html = urlopen(links_url)
     bs_links = BeautifulSoup(html, 'html.parser')
     linhas = bs_links.find_all('tbody')
@@ -38,11 +38,13 @@ def read_link(dados):
     filme= {}
     nome= ""
     link=""
+    duracao=""
     for i in dados:
         filhas = i.findChildren("td")
         for j in filhas:  
                 if k == 0:
                     link= j.text
+                    duracao =read_duracao(link)
                     k+=1
                 else:
                     nome= j.text
@@ -52,6 +54,14 @@ def read_link(dados):
                     k=0
             
     return base
+def read_duracao(link):
+    link= convert_link_to_raw(link)
+    html = urlopen(link)
+    bs_link= BeautifulSoup(html, 'html.parser')
+    linhas = bs_link.find_all('dd')
+    return linhas[1].text
+    
+
 def read_date(dados):
     base = {}
     k=0
