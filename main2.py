@@ -1,13 +1,17 @@
+from urllib import request
 from urllib.request import urlopen
 from bs4 import BeautifulSoup
 
 def get_movie_info(listing_url, links_url, movie_id):
+     movie_id = movie_id.split("/")
+    titulo = movie_id[1]
+    genero=movie_id[0]
     # tratamento link dos dados gerais do filme
     listing_url= convert_link_to_raw(listing_url)
     html = urlopen(listing_url)
     bs = BeautifulSoup(html, 'html.parser')
     linhas = bs.find_all('tbody')
-    base_inicial= read_date(linhas)
+    filme_inicial= get_dados_gerais_filme(linhas)
     #fim do tratamento
 
     #tratamento da bases dos links dos filmes
@@ -18,9 +22,7 @@ def get_movie_info(listing_url, links_url, movie_id):
     base_links = read_link(linhas)
     #fim
     # capturando os dados e alocando no dicionário
-    movie_id = movie_id.split("/")
-    titulo = movie_id[1]
-    genero=movie_id[0]
+   
     duracao= "Nao Encontrada"
     link= "Nao Encontrado"
     diretor="Não Encontrado"
