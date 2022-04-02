@@ -3,7 +3,7 @@ from urllib.request import urlopen
 from bs4 import BeautifulSoup
 
 def get_movie_info(listing_url, links_url, movie_id):
-     movie_id = movie_id.split("/")
+    movie_id = movie_id.split("/")
     titulo = movie_id[1]
     genero=movie_id[0]
     # tratamento link dos dados gerais do filme
@@ -11,7 +11,7 @@ def get_movie_info(listing_url, links_url, movie_id):
     html = urlopen(listing_url)
     bs = BeautifulSoup(html, 'html.parser')
     linhas = bs.find_all('tbody')
-    filme_inicial= get_dados_gerais_filme(linhas)
+    filme_dados_gerais= get_dados_gerais_filme(linhas,titulo)
     #fim do tratamento
 
     #tratamento da bases dos links dos filmes
@@ -19,40 +19,24 @@ def get_movie_info(listing_url, links_url, movie_id):
     html = urlopen(links_url)
     bs_links = BeautifulSoup(html, 'html.parser')
     linhas = bs_links.find_all('tbody')
-    base_links = read_link(linhas)
+    filme_dados_especificos = read_link(linhas,titulo)
     #fim
-    # capturando os dados e alocando no dicionário
-   
-    duracao= "Nao Encontrada"
-    link= "Nao Encontrado"
-    diretor="Não Encontrado"
-    for f in base_inicial:
-        if(base_inicial[f]["nome"]==titulo):
-            diretor=base_inicial[f]["diretor"]
-            break
-    for f in base_links:
-        if(base_links[f][titulo] !=None):
-            duracao=base_links[f]["duracao"]
-            link= base_links[f][titulo]
-            break
     filme ={
-        "url":link,
-
+        "url":filme_dados_especificos[titulo],
         "titulo": titulo,
         "genero": genero,
-        "diretor":diretor,
-        "duracao":duracao
+        "diretor":filme_dados_gerais["diretor"],
+        "duracao":filme_dados_especificos["duracao"]
     }
     return filme
+  
     
-def read_link(dados):
-    base = {}
-    k=0
-    x=0
+    
+def read_link(dados,titulo):
+    k=0 
     filme= {}
     nome= ""
     link=""
-    diretor=""
     duracao=""
     for i in dados:
         filhas = i.findChildren("td")
@@ -64,11 +48,11 @@ def read_link(dados):
                 else:
                     nome= j.text
                     filme={nome : link, "duracao": duracao}
-                    base[x]= filme
-                    x+=1
+                    if(nome==titulo):
+                        return filme
                     k=0
             
-    return base
+    return False
 def read_duracao(link):
     link= convert_link_to_raw(link)
     html = urlopen(link)
@@ -77,10 +61,8 @@ def read_duracao(link):
     return linhas[1].text
     
 
-def read_date(dados):
-    base = {}
+def get_dados_gerais_filme(dados,titulo):
     k=0
-    x=0
     filme= {}
     nome= ""
     genero=""
@@ -97,11 +79,11 @@ def read_date(dados):
                 else:
                     diretor= j.text
                     filme={"nome" : nome, "genero": genero, "diretor": diretor}
-                    base[x]= filme
-                    x+=1
+                    if(filme["nome"]==titulo):
+                        return filme
                     k=0
             
-    return base
+    return false
 def convert_link_to_raw(link):
     link = link.split("/")
     link = link[0]+'//'+link[2]+'/raw/'+link[3]
