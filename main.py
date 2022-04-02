@@ -10,17 +10,27 @@ def get_movie_info(listing_url, links_url, movie_id):
         "diretor": "reginaldo catarino",
         "duracao": "02:12"
     }
-
+    
+    # tratamento link dos dados gerais do filme
+    listing_url= convert_link_to_raw(listing_url)
+    print(listing_url)
     html = urlopen(listing_url)
     bs = BeautifulSoup(html, 'html.parser')
     linhas = bs.find_all('tbody')
     base_inicial= read_date(linhas)
+    #fim do tratamento
 
+    #tratamento da bases dos links dos filmes
     html = urlopen(links_url)
     bs_links = BeautifulSoup(html, 'html.parser')
     linhas = bs_links.find_all('tbody')
     base_links = read_link(linhas)
-    print(base_links)
+    #fim
+    # capturando os dados e alocando no dicionário
+    movie_id = movie_id.split("/")
+    titulo = movie_id[1]
+    genero=movie_id[0]
+
 def read_link(dados):
     base = {}
     k=0
@@ -67,4 +77,9 @@ def read_date(dados):
                     k=0
             
     return base
-get_movie_info("https://pastebin.com/raw/PcVfQ1ff","https://pastebin.com/raw/Tdp532rr", "terror/a vila")
+def convert_link_to_raw(link):
+    link = link.split("/")
+    link = link[0]+'//'+link[2]+'/raw/'+link[3]
+    return link
+        
+get_movie_info("https://pastebin.com/PcVfQ1ff","https://pastebin.com/Tdp532rr", "terror/a vila")
