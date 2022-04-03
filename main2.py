@@ -24,8 +24,8 @@ def get_movie_info(listing_url, links_url, movie_id):
     if((filme_dados_especificos!=None) and (filme_dados_gerais!=None)):
         filme ={
             "url":filme_dados_especificos[titulo],
-            "titulo": titulo,
-            "genero": genero,
+            "titulo": filme_dados_gerais["nome"],
+            "genero": filme_dados_gerais["genero"],
             "diretor":filme_dados_gerais["diretor"],
             "duracao":filme_dados_especificos["duracao"]
         }
@@ -96,4 +96,4 @@ def convert_link_to_raw(link):
     link = link[0]+'//'+link[2]+'/raw/'+link[3]
     return link
         
-print(get_movie_info("https://pastebin.com/PcVfQ1ff","https://pastebin.com/Tdp532rr", "terror/a vila"))
+print(get_movie_info("https://pastebin.com/PcVfQ1ff","https://pastebin.com/Tdp532rr", "romance/folhas queimadas"))

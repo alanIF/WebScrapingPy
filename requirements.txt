@@ -1,3 +1,8 @@
 # Requerimentos
 - Instalar biblioteca beautifulsoup4, executando comando: 
     * pip install beautifulsoup4
+# Rodar 
+* Version 1 - Versao nao otimizada
+    - python main.py
+* Version 2 - Versao  otimizada
+    - python main2.py

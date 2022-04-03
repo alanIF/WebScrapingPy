@@ -26,6 +26,8 @@ def get_movie_info(listing_url, links_url, movie_id):
     diretor="Não Encontrado"
     for f in base_inicial:
         if(base_inicial[f]["nome"]==titulo):
+            titulo= base_inicial[f]["nome"]
+            genero=base_inicial[f]["genero"]
             diretor=base_inicial[f]["diretor"]
             break
     for f in base_links:
@@ -108,4 +110,4 @@ def convert_link_to_raw(link):
     link = link[0]+'//'+link[2]+'/raw/'+link[3]
     return link
         
-print(get_movie_info("https://pastebin.com/PcVfQ1ff","https://pastebin.com/Tdp532rr", "terror/a vila2"))
+print(get_movie_info("https://pastebin.com/PcVfQ1ff","https://pastebin.com/Tdp532rr", "terror/a vila"))
